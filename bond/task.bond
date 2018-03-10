@@ -1,0 +1,15 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define job structures
+
+import "common.bond" 
+import "state.bond"
+import "module.bond"
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+struct Task : EntityExt
+{
+     // if inherited from NamedEntity, the order will start from 6
+	 6: required Guid ModuleId = nothing;
+	 7: State JobState = Unknown;
+}

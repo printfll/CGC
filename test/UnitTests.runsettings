@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+  <!-- Configurations that affect the Test Framework -->
+  <RunConfiguration>
+    <!-- Framework35 | [Framework40] | Framework45 -->
+    <TargetFrameworkVersion>dotnetcoreapp,version=2.0</TargetFrameworkVersion>
+  </RunConfiguration>
+  
+</RunSettings>

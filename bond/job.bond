@@ -1,0 +1,18 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define experiment structures
+
+import "common.bond" 
+import "state.bond"
+import "task.bond"
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+struct Job
+{
+    0: string Name;
+    1: DateTime CreatedOn;
+    2: string CreatedBy;
+	3: required Guid GraphId;
+	4: State JobState = Unknown;
+    5: vector<Task> Tasks;
+}

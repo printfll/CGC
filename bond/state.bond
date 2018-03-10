@@ -1,0 +1,17 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define job/experiment state
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+enum State
+{
+	Unknown = 0,
+	New = 1,
+	Running = 2,
+	Aborting = 3,
+
+	Aborted = 4,
+	Failed = 5,
+	PartialFailed = 6,
+	Completed = 7
+}

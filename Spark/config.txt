@@ -1,0 +1,13 @@
+{
+    "spark":{
+        "core-site":"~/hadoop_conf/core-site.xml",
+        "yarn-site":"~/hadoop_conf/yarn-site.xml",
+        "hadoop_conf_dir":"~/hadoop_conf",
+        "hostname":"sandbox",
+        "yarn.resourcemanager.webapp.address":"0.0.0.0:8088",
+        "namenode":"sandbox"
+    },
+    "hadoop":{
+        "fs.defaultFS":"hdfs://sandbox:9000",
+    }
+}

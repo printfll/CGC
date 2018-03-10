@@ -1,0 +1,35 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define module structure
+
+import "common.bond" 
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+struct ModuleParameter;
+
+struct Module : EntityExt
+{
+    // if inherited from NamedEntity, the order will start from 6
+    // if inherited from EntityBase, the order will start from 3
+    6: string Configuration;
+    7: string CodePath;
+    8: Guid FamilyId;
+    9: string Version;
+    10: vector<ModuleParameter> Parameters;
+}
+
+enum ParameterDirection
+{
+    None = 0,
+    Input = 1,
+    Output = 2
+}
+
+
+struct ModuleParameter
+{
+    0: bool IsGraphPort = false;
+    1: ParameterDirection Direction = None;
+    2: string ValueType = nothing;
+    3: nullable<Guid> PortId = nothing;
+}

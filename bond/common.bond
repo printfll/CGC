@@ -1,0 +1,21 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define common structures
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+using DateTime = int64;
+using Guid = string;
+
+struct Entity
+{
+    0: Guid Id;
+    1: string Name;
+}
+
+struct EntityExt : Entity
+{
+    2: DateTime CreatedOn;
+    3: string CreatedBy;
+    4: DateTime ModifiedOn;
+    5: string ModifiedBy;
+}

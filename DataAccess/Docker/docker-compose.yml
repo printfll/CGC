@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  dataaccess.host:
+    image: dataaccess.host
+    build:
+      context: .
+      dockerfile: DataAccessHost/Dockerfile

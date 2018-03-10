@@ -1,0 +1,45 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define workflow related service interface
+
+import "common.bond" 
+import "task.bond" 
+import "job.bond" 
+import "module.bond" 
+import "state.bond" 
+import "graph.bond" 
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+
+struct AddOrUpdateEntityResponse
+{
+    0: bool AddedOrUpdated;
+    1: Guid EntityId;
+}
+
+struct GetEntityRequest
+{
+    0: vector<Guid> EntityIds;
+    1: vector<string> CreatedByUser;
+}
+
+struct GetModuleResponse
+{
+    0: vector<Module> Modules;
+}
+
+struct GetJobResponse
+{
+    0: vector<Job> Jobs;
+}
+
+service WorkflowService
+{
+    AddOrUpdateEntityResponse AddModule(Module);
+
+    GetModuleResponse GetModule(GetEntityRequest);
+
+    AddOrUpdateEntityResponse AddJob(Job);
+
+    GetJobResponse GetJob(GetEntityRequest);
+}

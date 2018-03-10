@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="CarinaTests" ToolsVersion="14.0">
+  <Include Path="Carina.ruleset" Action="Default" />
+
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- Elements must be documented. Unit tests don't really need documentation -->
+    <Rule Id="SA1600" Action="None" />
+  </Rules>
+</RuleSet>

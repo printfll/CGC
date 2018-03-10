@@ -1,0 +1,150 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define user related service interface
+
+import "common.bond" 
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+struct Account
+{
+    0: string Name;
+    1: string Type;
+}
+
+struct User : Account
+{
+    2: string Email;
+}
+
+struct Group : Account
+{
+    2: string Owner;
+}
+
+struct Request
+{
+    0: User CurrentUser;
+}
+
+struct Response
+{
+    0: int8 Status;
+    1: string Message;
+}
+
+struct AddUserRequest : Request
+{
+    1: User User;
+}
+
+struct AddUserResponse : Response
+{
+}
+
+struct RemoveUserRequest : AddUserRequest
+{
+}
+
+struct RemoveUserResponse : Response
+{
+}
+
+struct AddGroupRequest : Request
+{
+    1: Group Group;
+}
+
+struct AddGroupResponse : Response
+{
+}
+
+struct RemoveGroupRequest : AddGroupRequest
+{
+}
+
+struct RemoveGroupResponse : Response
+{
+}
+
+struct AddAccountToGroupRequest : Request
+{
+    1: Account Account;
+    2: Group Group;
+}
+
+struct AddAccountToGroupResponse : Response
+{
+}
+
+struct RemoveAccountFromGroupRequest : AddAccountToGroupRequest
+{
+}
+
+struct RemoveAccountFromGroupResponse : Response
+{
+}
+
+struct GetUserRequest : Request
+{
+    1: string UserName;
+}
+
+struct GetUserResponse : Response
+{
+    2: User User;
+}
+
+struct GetGroupRequest : Request
+{
+    1: string GroupName;
+}
+
+struct GetGroupResponse : Response
+{
+    2: Group Group;
+}
+
+struct GetOwnedGroupRequest : Request
+{
+    1: User User;
+}
+
+struct GetOwnedGroupResponse : Response
+{
+    2: vector<Group> Groups;
+}
+
+struct GetMembersOfGroupRequest : Request
+{
+    1: Group Group;
+}
+
+struct GetMembersOfGroupResponse : Response
+{
+    2: vector<Account> Accounts;
+}
+
+struct GetMembershipsOfAccountRequest : Request
+{
+    1: Account Account;
+}
+
+struct GetMembershipsOfAccountResponse : Response
+{
+    2: vector<Group> Groups;
+}
+
+service UserService
+{
+    AddUserResponse AddUser(AddUserRequest);
+    RemoveUserResponse RemoveUser(RemoveUserRequest);
+    AddGroupResponse AddGroup(AddGroupRequest);
+    RemoveGroupResponse RemoveGroup(RemoveGroupRequest);
+    AddAccountToGroupResponse AddAccountToGroup(AddAccountToGroupRequest);
+    RemoveAccountFromGroupResponse RemoveAccountFromGroup(RemoveAccountFromGroupRequest);
+    GetUserResponse GetUser(GetUserRequest);
+    GetGroupResponse GetGroup(GetGroupRequest);
+    GetOwnedGroupResponse GetOwnedGroups(GetOwnedGroupRequest);
+    GetMembersOfGroupResponse GetMembersOfGroup(GetMembersOfGroupRequest);
+    GetMembershipsOfAccountResponse GetMembershipsOfAccount(GetMembershipsOfAccountRequest);
+}

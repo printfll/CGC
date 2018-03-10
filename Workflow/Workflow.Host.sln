@@ -1,0 +1,31 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2036
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workflow.Host", "Workflow.Host\Workflow.Host.csproj", "{4EF17392-2025-458F-A01B-7ED8656FEF28}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BondCodeGen", "..\bond\BondCodeGen.csproj", "{DD8E5FBB-6AF3-4E42-AEC2-FEF54316B75B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4EF17392-2025-458F-A01B-7ED8656FEF28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EF17392-2025-458F-A01B-7ED8656FEF28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EF17392-2025-458F-A01B-7ED8656FEF28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EF17392-2025-458F-A01B-7ED8656FEF28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD8E5FBB-6AF3-4E42-AEC2-FEF54316B75B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD8E5FBB-6AF3-4E42-AEC2-FEF54316B75B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD8E5FBB-6AF3-4E42-AEC2-FEF54316B75B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD8E5FBB-6AF3-4E42-AEC2-FEF54316B75B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DE9B8B9B-2214-4B48-B653-4E753F886885}
+	EndGlobalSection
+EndGlobal

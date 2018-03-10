@@ -1,0 +1,8 @@
+{
+    "database": {
+        "active": "CGCTest",
+        "CGCTest": {
+            "connectionString": "Data Source=(localdb)\\MSSQLLocalDB;Initial Catalog=CGCTest;Integrated Security=True;Connect Timeout=30;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"
+        }
+    }
+}

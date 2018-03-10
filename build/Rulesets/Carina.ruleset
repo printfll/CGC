@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet ToolsVersion="14.0" Name="Carina">
+  <Include Path="Sdl7.0.ruleset" Action="Default" />
+  <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
+    <!-- Argument type '...' is not CLS-compliant. -->
+    <Rule Id="CS3001" Action="None" />
+    
+    <!-- Return type of '...' is not CLS-compliant. -->
+    <Rule Id="CS3002" Action="None" />
+    
+    <!-- Type of '...' is not CLS-compliant. -->
+    <Rule Id="CS3003" Action="None" />
+    
+    <!-- Identifier '...' is not CLS-compliant. -->
+    <Rule Id="CS3008" Action="None" />
+    
+    <!-- '...': base type '...' is not CLS-compliant. -->
+    <Rule Id="CS3009" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
+    <!-- Enable XML documentation output -->
+    <Rule Id="SA1652" Action="None" />
+    
+    <!-- The documentation for parameter '{0}' is missing -->
+    <Rule Id="SA1611" Action="None" />
+    
+    <!-- Element return value must be documented -->
+    <Rule Id="SA1615" Action="None" />
+    
+    <!-- The documentation for type parameter '{0}' is missing -->
+    <Rule Id="SA1618" Action="None" />
+        
+    <!-- Generic type constraints must be on their own line -->
+    <Rule Id="SA1127" Action="None" />
+    
+    <!-- The parameter spans multiple lines -->
+    <Rule Id="SA1118" Action="None" />
+    
+    <!-- DoNotUseRegions -->
+    <Rule Id="SA1124" Action="None" />
+    
+    <!-- FileMayOnlyContainASingleClass -->
+    <Rule Id="SA1402" Action="None" />
+    
+    <!-- RemoveDelegateParenthesisWhenPossible -->
+    <Rule Id="SA1410" Action="None" />
+    
+    <!-- File Header -->
+    <Rule Id="SA1633" Action="None" />
+    <Rule Id="SA1634" Action="None" />
+    <Rule Id="SA1635" Action="None" />
+    <Rule Id="SA1637" Action="None" />
+    <Rule Id="SA1638" Action="None" />
+    <Rule Id="SA1640" Action="None" />
+    <Rule Id="SA1649" Action="None" />
+	
+	<!-- Xml Document output-->
+	<Rule Id="SA1652" Action="None" />
+  </Rules>
+</RuleSet>

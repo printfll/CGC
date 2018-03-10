@@ -1,0 +1,45 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Bond file to define graph structure
+
+import "common.bond"
+
+namespace Microsoft.CGC.DataAccess.Service.Interface;
+
+struct Node;
+struct Edge;
+struct Port;
+struct Layout;
+
+struct Graph : Entity
+{
+    // if inherited from EntityBase, the order will start from 3
+    3: vector<Node> Nodes;
+    4: vector<Edge> Edges;
+}
+
+struct Node : Entity
+{
+    // if inherited from EntityBase, the order will start from 3
+    3: Layout Layout;
+}
+
+struct Edge : Entity
+{
+    // if inherited from EntityBase, the order will start from 3
+    3: Port FromPort;
+    4: Port ToPort;
+}
+
+struct Port : Entity
+{
+    // if inherited from EntityBase, the order will start from 3
+    3: Guid NodeId;
+}
+
+struct Layout
+{
+    0: float X;
+    1: float Y;
+    2: float Width;
+    3: float Height;
+}

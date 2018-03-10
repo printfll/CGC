@@ -1,0 +1,1 @@
+cgcregistry.azurecr.io/dataaccess.host

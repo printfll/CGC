@@ -1,0 +1,43 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <RootNamespace>Microsoft.CGC.DataAccess.Service</RootNamespace>
+    <AssemblyName>Microsoft.CGC.DataAccess.Service</AssemblyName>
+    <Configurations>Debug;Release</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.5.1" />
+    <PackageReference Include="Grpc" Version="1.10.0" />
+    <PackageReference Include="Grpc.Tools" Version="1.10.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.0.0" />
+  </ItemGroup>
+  
+  
+  <ItemGroup>
+    <None Include="..\..\..\proto\**\*.*" Link="proto\%(RecursiveDir)%(FileName)%(Extension)" />
+  </ItemGroup>
+
+  
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+     <None Update="config.json">
+       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+     </None>
+   </ItemGroup>
+
+  <Target Name="PreBuild_Windows" BeforeTargets="PreBuildEvent" Condition=" '$(OS)' == 'Unix' ">
+    <Exec Command="bash " />
+  </Target>
+
+  <Target Name="PreBuild_Linux" BeforeTargets="PreBuildEvent" Condition=" '$(OS)' == 'Windows_NT' ">
+    <Exec Command="cmd /c $(ProjectDir)prebuild_windows.bat" />
+  </Target>
+</Project>

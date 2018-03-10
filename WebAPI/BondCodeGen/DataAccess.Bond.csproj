@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <AssemblyName>Microsoft.CGC.DataAccess.Bond</AssemblyName>
+    <RootNamespace>Microsoft.CGC.DataAccess.Bond</RootNamespace>
+    <BondOptions>--using="DateTime=System.DateTime" --using="Guid=System.Guid"</BondOptions>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="Bond.CSharp" Version="7.0.1" />
+    <PackageReference Include="Bond.Grpc.CSharp" Version="7.0.1" />
+  </ItemGroup>
+  
+   <ItemGroup>
+    <BondCodegen Include="..\..\bond\common.bond" />
+    <BondCodegen Include="..\..\bond\graph.bond" />
+    <BondCodegen Include="..\..\bond\state.bond" />
+    <BondCodegen Include="..\..\bond\job.bond" />
+    <BondCodegen Include="..\..\bond\experiment.bond" />
+    <BondCodegen Include="..\..\bond\module.bond" />
+    <BondCodegen Include="..\..\bond\userservice.bond">
+        <Options>--grpc --using="DateTime=System.DateTime" --using="Guid=System.Guid"</Options>
+    </BondCodegen>
+    <BondCodegen Include="..\..\bond\workflowservice.bond">
+        <Options>--grpc --using="DateTime=System.DateTime" --using="Guid=System.Guid"</Options>
+    </BondCodegen>
+  </ItemGroup>
+  
+   <ItemGroup>
+    <None Include="..\..\bond\common.bond" Link="bond\common.bond" />
+    <None Include="..\..\bond\graph.bond" Link="bond\graph.bond" />
+    <None Include="..\..\bond\state.bond" Link="bond\state.bond" />
+    <None Include="..\..\bond\job.bond" Link="bond\job.bond" />
+    <None Include="..\..\bond\experiment.bond" Link="bond\experiment.bond" />
+    <None Include="..\..\bond\module.bond" Link="bond\module.bond" />
+    <None Include="..\..\bond\userservice.bond" Link="bond\userservice.bond" />
+    <None Include="..\..\bond\workflowservice.bond" Link="bond\workflowservice.bond" />
+  </ItemGroup>
+  
+  <ItemGroup>
+     <None Include="..\..\bond\BondTypeAliasConverter.cs" Link="BondTypeAliasConverter.cs" >
+		<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+	 </None>
+  </ItemGroup>
+   
+   <ItemGroup>  
+        <BondCodegenOutput Include="$(ProjectDir)\obj\$(ConfigurationName)\$(TargetFramework)\*.cs" Exclude="$(ProjectDir)\obj\$(ConfigurationName)\$(TargetFramework)\*.AssemblyInfo.cs" />  
+		<BondTypeAliasConverter Include="$(OutDir)\BondTypeAliasConverter.cs" />  
+    </ItemGroup>
+  
+
+  
+  <Target Name="CopyBondCodegen" AfterTargets="PostBuildEvent">
+    <Copy SourceFiles="@(BondCodegenOutput)" DestinationFolder="..\Docker\DataAccessHost\Bond\" />
+	<Copy SourceFiles="@(BondTypeAliasConverter)" DestinationFolder="..\Docker\DataAccessHost\Bond\" />
+  </Target>
+</Project>

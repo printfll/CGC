@@ -1,0 +1,26 @@
+// Copyright (c) Microsoft. All rights reserved.
+
+syntax = "proto3";
+import "userservice.proto";
+package Microsoft.CGC.DataAccess.GRPC;
+
+message CheckPermissionRequest
+{
+    User CurrentUser = 1;
+    User User = 2;
+    string ResourceType = 3;
+    string ResourceId = 4;
+    string Permission = 5;
+}
+
+message CheckPermissionResponse
+{
+    int32 Status = 1;
+    string Message = 2;
+    bool HasPermission = 3;
+}
+
+service AuthorizationService
+{
+    rpc CheckPermission (CheckPermissionRequest) returns (CheckPermissionResponse);
+}
