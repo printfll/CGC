@@ -1,0 +1,29 @@
+syntax = "proto3";
+package jobmanager;
+
+import "jobmanager/job.proto";
+import "dataaccess/jobservice.proto";
+
+option csharp_namespace = "Microsoft.CGC.JobManager.GRPC";
+
+message GetJobByIdRequest {
+    string job_id = 1;
+}
+
+message GetJobsByUserRequest {
+    string user_id = 1;
+}
+
+message Response {
+    bool result = 1;
+}
+
+message GetJobsByUserResponse {
+    repeated Job jobs = 1;
+}
+
+service JobService {
+    rpc SubmitJob(Job) returns(Response);
+    rpc GetJobById(GetJobByIdRequest) returns(Job);
+    rpc GetJobsByUser(GetJobsByUserRequest) returns(GetJobsByUserResponse);
+}

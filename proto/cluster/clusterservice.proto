@@ -1,0 +1,85 @@
+syntax = "proto3";
+package cluster;
+
+import "cluster/task.proto";
+import "status.proto";
+
+option csharp_namespace = "Microsoft.CGC.Cluster.GRPC";
+
+message Request {
+    string id = 1;
+}
+
+message GetResourceRequest {
+    string config = 1;
+}
+
+message Response {
+    /// <summary>
+    ///     Indicate whether the current response is valid or not.
+    /// </summary>
+    bool result = 1;
+}
+
+message SubmitTaskResponse {
+    /// <summary>
+    ///     Indicate whether the current response is valid or not.
+    /// </summary>
+    bool result = 1;
+
+    string task_id = 2;
+}
+
+message GetStatusResponse {
+    /// <summary>
+    ///     Indicate whether the current response is valid or not.
+    /// </summary>
+    bool result = 1;
+    common.Status status = 2;
+    string log = 3;
+}
+
+message GetResourceResponse {
+    message ResourcePair {
+        enum ResourceType {
+            CPU = 0;
+            GPU = 1;
+            DISK = 2;
+            MEMORY = 3;
+        }
+
+        ResourceType type = 1;
+        int64 value = 2;
+    }
+
+    /// <summary>
+    ///     Indicate whether the current response is valid or not.
+    /// </summary>
+    bool result = 1;
+    repeated ResourcePair resource = 2;
+}
+
+/// <summary>
+///     Cluster abstraction.
+/// </summary>
+service ClusterProxy {
+    /// <summary>
+    ///     Calculate the resource that the task needeed.
+    /// </summary>
+    rpc GetResource(GetResourceRequest) returns(GetResourceResponse);
+
+    /// <summary>
+    ///     Try to submit a job.
+    /// </summary>
+    rpc SubmitTask(Task) returns(SubmitTaskResponse);
+
+    /// <summary>
+    ///     Try to kill the job
+    /// </summary>
+    rpc KillTask(Request) returns(Response);
+
+    /// <summary>
+    ///     Get the current running task status.
+    /// </summary>
+    rpc GetStatus(Request) returns(GetStatusResponse);
+}

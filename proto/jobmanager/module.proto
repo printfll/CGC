@@ -1,0 +1,19 @@
+syntax = "proto3";
+package jobmanager;
+
+import "moduletype.proto";
+import "parameter.proto";
+
+option csharp_namespace = "Microsoft.CGC.JobManager.GRPC";
+
+message Module {
+    common.ModuleType type = 1;
+    string name = 2;
+    repeated .common.InputParameter input = 3;
+    repeated .common.OutputParameter output = 4;
+    string author = 5;
+    string config  = 6;
+    string command = 7;
+    // The HDFS path.
+    string dependency = 8;
+}

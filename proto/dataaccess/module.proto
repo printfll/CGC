@@ -1,0 +1,15 @@
+syntax = "proto3";
+package dataaccess;
+
+import "moduletype.proto";
+import "parameter.proto";
+
+option csharp_namespace = "Microsoft.CGC.DataAccess.GRPC";
+
+message Module {
+    string id = 1;
+    common.ModuleType type = 2;
+    string name = 3;
+    string author = 4;
+    string payload = 5;
+}

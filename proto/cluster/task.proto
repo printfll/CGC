@@ -1,0 +1,37 @@
+syntax = "proto3";
+package cluster;
+
+import "parameter.proto";
+import "moduletype.proto";
+
+option csharp_namespace = "Microsoft.CGC.Cluster.GRPC";
+
+message  Task {
+    /// <summary>
+    ///     The list of task input parameters.
+    /// </summary>
+    repeated .common.InputParameter input_parameters= 1;
+
+    /// <summary>
+    ///     The list of task output parameters.
+    /// </summary>
+    repeated .common.OutputParameter output_parameters = 2;
+
+    /// <summary>
+    ///     The HDFS path of source code.
+    /// </summary>
+    string src_code_path = 3;
+
+    /// <summary>
+    ///     <para>The command to run the module.</para>
+    ///     <example>"python run.py --arg0=... --arg1=..."</example>
+    /// </summary>
+    string command = 4;
+
+    /// <summary>
+    ///     Cluster specific configurations are put here.
+    /// </summary>
+    string config = 5;
+
+    .common.ModuleType task_type = 6;
+}

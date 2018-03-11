@@ -16,7 +16,7 @@ class sparkserviceapi:
         try:
             url = self.prefix_addr + jobid + "/state"
             data = {"state":"KILLED"}
-            headers = {'Content-type': 'application/json'}
+            headers = {'Content-type':'application/json'}
             res = requests.put(str(url), data = json.dumps(data), headers = headers)
             if str(res.json()["state"]) == "FAILED":
                 response["result"] = False
@@ -49,13 +49,10 @@ class sparkserviceapi:
                     cmd_arr.append(memory)
             
             bashCommand = "spark-submit --conf spark.yarn.submit.waitAppCompletion=false"
-
             command = bashCommand + " " + " ".join(cmd_arr)
-            print("command:",command)
             pro = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             for line in pro.stdout:
                 if "Submitted application" in line:
-                    print(line)
                     start = line.find("Submitted application")+len("Submitted application")
                     app_id = line[start:-1].strip()
                     response["task_id"] = app_id

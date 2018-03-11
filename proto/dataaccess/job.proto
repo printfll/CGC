@@ -1,0 +1,21 @@
+syntax = "proto3";
+package dataaccess;
+
+import "status.proto";
+import "parameter.proto";
+
+option csharp_namespace = "Microsoft.CGC.DataAccess.GRPC";
+
+message Job {
+    string id = 1;
+    string parent_id = 2;
+    string version = 3;
+    string owner = 4;
+    uint64  submitted_on = 5;
+    common.Status status = 6;
+    uint32 priority = 7;
+    uint64 longgest_running_time = 8;
+    uint64 longgest_waiting_time = 9;
+    // Database do not need to care this field
+    string payload = 10;
+}
