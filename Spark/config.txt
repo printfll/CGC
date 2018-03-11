@@ -8,6 +8,6 @@
         "namenode":"sandbox"
     },
     "hadoop":{
-        "fs.defaultFS":"hdfs://sandbox:9000",
+        "fs.defaultFS":"hdfs://sandbox:9000"
     }
 }

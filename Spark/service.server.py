@@ -2,8 +2,9 @@ import grpc
 import time
 from concurrent import futures
 from cluster import clusterservice_pb2, clusterservice_pb2_grpc
-import jobapi
+from jobapi import sparkserviceapi
 import globalV
+
 
 class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
     # def DoFormat(self, request, context):
@@ -12,6 +13,9 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
     # def DoAdd(selfself, request, context):
     #     str = request.text
     #     return ClusterProxy_pb2.Data(text=str.upper() + str.lower())
+    def __init__(self):
+        self.sparkservice = sparkserviceapi("config.txt")
+
     def GetResourceCapacity(self, resourcerequest, context):
         pass
 
@@ -26,10 +30,10 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
 
     def KillTask(self, request, context):
         print(request)
-        return jobapi.KillJob(request.id)
+        return self.sparkservice.KillJob(request.id)
 
     def GetStatus(self, request, context):
-        return jobapi.JobStatus(request.id)
+        return self.sparkservice.JobStatus(request.id)
 
     def GetLog(self, request, context):
         pass
@@ -38,7 +42,8 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
 
 def serve(_HOST, _PORT):
     grpcServer = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
-    clusterservice_pb2_grpc.add_ClusterProxyServicer_to_server(ClusterProxy(), grpcServer)
+    proxy = ClusterProxy()
+    clusterservice_pb2_grpc.add_ClusterProxyServicer_to_server(proxy, grpcServer)
     grpcServer.add_insecure_port(_HOST + ':' + _PORT)
     grpcServer.start()
     try:
