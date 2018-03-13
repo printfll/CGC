@@ -3,6 +3,9 @@ import status_pb2
 import globalV
 import subprocess
 import json
+import logapi
+
+logger = logapi.Log()
 
 class sparkserviceapi:
 
@@ -12,11 +15,12 @@ class sparkserviceapi:
         self.prefix_addr = "http://" + self.namenode + ":" + self.rm_web_addr.split(":")[-1] + "/ws/v1/cluster/apps/"
     
     def KillJob(self, jobid):
+        logger.info("Calling jobapi KillJob[spark].")
         response = clusterservice_pb2.Response()
         try:
             url = self.prefix_addr + jobid + "/state"
             data = {"state":"KILLED"}
-            headers = {'Content-type':'application/json'}
+            headers = {'Content-type': 'application/json'}
             res = requests.put(str(url), data = json.dumps(data), headers = headers)
             if str(res.json()["state"]) == "FAILED":
                 response["result"] = False
@@ -24,12 +28,15 @@ class sparkserviceapi:
                 response["result"] = True
         except Exception as e:
             response["result"] = False
-            print("exception:",e)
+            logger.warning("Throw expcetion at KillJob[spark]: %s" % e)
+        logger.info("KillJob end[spark].")
         return response
 
-    def CreateJob(self, config):
+    def CreateJob(self, task):
+        logger.info("Calling jobapi CreateJob[spark].")
         response = clusterservice_pb2.SubmitTaskResponse()
         try:
+            config = json.loads(task.config)
             cmd_arr = config["command"].split()
             for i in range(len(cmd_arr)):
                 if cmd_arr[i].startswith("--master"):
@@ -59,11 +66,13 @@ class sparkserviceapi:
                     response["result"] = True
         except Exception as e:
             response["result"] = e
-            print("exception:",e)
+            logger.warning("Throw expcetion at CreateJob[spark]: %s" % e)
+        logger.info("CreateJob end[spark].")
         return response
 
 
     def JobStatus(self, jobid, namespaced=globalV.NAMESPACED):
+        logger.info("Calling jobapi JobStatus[spark].")
         response = clusterservice_pb2.GetStatusResponse()
         try:
             url = self.prefix_addr + jobid + "/"
@@ -74,9 +83,11 @@ class sparkserviceapi:
             response["log"] = res.text
             return response
         except Exception as e:
+            logger.warning("Throw expcetion at JobStatus[spark]: %s" % e)
             response["result"] = False
             response["status"] = str(status['app']['state'])
             response["log"] = str(e)
+        logger.info("JobStatus end[spark].")
         return response
 
     def GetResourceFromConfig(self, configjson):
