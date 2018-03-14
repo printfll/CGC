@@ -21,15 +21,28 @@ class HDFSService:
             client.put(src, dst)
         except Exception as error:
             raise Exception("upload error:"+repr(error)) 
+    
+    def read(self, src):
+        try:
+            with client.open(src) as f:
+                return f.read()
+        except Exception as error:
+            raise Exception("read error:"+repr(error)) 
 
 if __name__ == '__main__':
     serversocket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    serversocket.bind(('localhost', 9000))
+    serversocket.bind(('0.0.0.0', 8087))
     serversocket.listen(5) # become a server socket, maximum 5 connections
-
+    service = HDFSService("sandbox",9000)
     while True:
-        connection, address = serversocket.accept()
-        buf = connection.recv(1000)
-        if len(buf) > 0:
-            print(buf)
-            break
+        try:
+            connection, address = serversocket.accept()
+            buf = connection.recv(1000)
+            if len(buf) > 0:
+                print(buf)
+            res = service.read(str(buf))
+            print(res)
+            serversocket.sendto(res,(address[0], address[1]))
+        except Exception as error:
+            raise Exception("server error:"+repr(error)) 
+
