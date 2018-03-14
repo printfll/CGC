@@ -19,9 +19,9 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
     #     str = request.text
     #     return ClusterProxy_pb2.Data(text=str.upper() + str.lower())
     def __init__(self):
-        self.sparkservice = sparkserviceapi("config.txt")
+        self.sparkservice = sparkserviceapi("config/config.txt")
 
-    def GetResourceCapacity(self, resourcerequest, context): 
+    def GetResourceCapacity(self, resourcerequest, context):
         pass
 
     def GetResourceAllocatable(self, resourcerequest, context):
@@ -30,25 +30,25 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
     def GetResourcefromconfig(self, resourcerequest, context):
         pass
 
-    def SubmitTask(self, task):
-        logger.info("Calling SubmitTask service[spark].")
+    def SubmitTask(self, task, context):
+        logger.info("Calling SubmitTask service.")
         res = self.sparkservice.CreateJob(task)
-        logger.info("SubmitTask successfully[spark].")
+        logger.info("SubmitTask successfully.")
         return res
 
-    def KillTask(self, request):
-        logger.info("Calling KillTask service[spark].")
+    def KillTask(self, request, context):
+        logger.info("Calling KillTask service.")
         res = self.sparkservice.KillJob(request.id)
-        logger.info("KillTask successfully[spark].")
+        logger.info("KillTask successfully.")
         return res
 
-    def GetStatus(self, request):
-        logger.info("Calling GetStatus service[spark].")
+    def GetStatus(self, request, context):
+        logger.info("Calling GetStatus service.")
         res = self.sparkservice.JobStatus(request.id)
-        logger.info("GetStatus successfully[spark].")
+        logger.info("GetStatus successfully.")
         return res
 
-    def GetLog(self, request):
+    def GetLog(self, request, context):
         pass
 
 
@@ -62,6 +62,6 @@ def serve():
     grpcServer.start()
     try:
         while True:
-            time.sleep(globalV._ONE_DAY_IN_SECONDS)
+            time.sleep(globalV.ONE_DAY_IN_SECONDS)
     except KeyboardInterrupt:
         grpcServer.stop(0)
