@@ -5,25 +5,25 @@ import socket
 class HDFSService:
     def __init__(self, hostname, port):
         try:
-            this.client = HDFileSystem(host=hostname, port=port)
+            self.client = HDFileSystem(host=hostname, port=port)
         except Exception as error:
             raise Exception("init hdfs client error:"+repr(error))
 
     def download(self, src, dst):
         try:
-            this.client.cp(src, dst)
+            self.client.cp(src, dst)
         except Exception as error:
             raise Exception("download error:"+repr(error))
 
     def upload(self, src, dst):
         try:
-            this.client.put(src, dst)
+            self.client.put(src, dst)
         except Exception as error:
             raise Exception("upload error:"+repr(error)) 
     
     def read(self, src):
         try:
-            with this.client.open(src) as f:
+            with self.client.open(src) as f:
                 content = f.read()
             return content
         except Exception as error:
@@ -37,12 +37,12 @@ if __name__ == '__main__':
     while True:
         try:
             connection, address = serversocket.accept()
+            print("connect")
             buf = connection.recv(1000)
-            if len(buf) > 0:
-                print(buf)
             res = service.read(str(buf))
             print(res)
-            serversocket.sendto(res,(address[0], address[1]))
+            connection.sendall(res)
         except Exception as error:
             raise Exception("server error:"+repr(error)) 
+
 
