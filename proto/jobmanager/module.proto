@@ -1,19 +1,26 @@
 syntax = "proto3";
-package jobmanager;
+package grpc.jobmanager;
+import "jobmanager/parameter.proto";
+import "jobmanager/module_type.proto";
 
-import "moduletype.proto";
-import "parameter.proto";
-
-option csharp_namespace = "Microsoft.CGC.JobManager.GRPC";
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
 
 message Module {
-    common.ModuleType type = 1;
+    // for db to create the same schema
+    string id = 1;
     string name = 2;
-    repeated .common.InputParameter input = 3;
-    repeated .common.OutputParameter output = 4;
-    string author = 5;
-    string config  = 6;
-    string command = 7;
+    string owner = 3;
+    string family_id = 4;
+    string version = 5;
+    string description = 6;
+    uint64 submitted_on = 7;
+    ModuleType type = 8;
+    string config  = 9;
+    string command = 10;
+    
+    // for serialization only, no schema in db
     // The HDFS path.
-    string dependency = 8;
+    string dependency = 12;
+    repeated InputParameter inputs = 13;
+    repeated OutputParameter outputs = 14;
 }

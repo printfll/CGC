@@ -1,0 +1,10 @@
+syntax = "proto3";
+package grpc;
+
+option csharp_namespace = "Microsoft.CGC.GRPC";
+
+// [flags]
+enum ErrorCode {
+    SUCCEED = 0;
+    FAILED = 1;
+}

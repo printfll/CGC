@@ -1,7 +1,7 @@
 syntax = "proto3";
-package common;
+package grpc.jobmanager;
 
-option csharp_namespace = "Microsoft.CGC.Common.GRPC";
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
 
 enum ModuleType {
     K8S = 0;

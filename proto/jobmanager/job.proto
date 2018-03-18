@@ -1,32 +1,40 @@
 syntax = "proto3";
-package jobmanager;
+package grpc.jobmanager;
+import "jobmanager/parameter.proto";
+import "jobmanager/task.proto";
+import "jobmanager/status.proto";
 
-import "status.proto";
-import "parameter.proto";
-
-option csharp_namespace = "Microsoft.CGC.JobManager.GRPC";
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
 
 // not used at present.
 message Job {
+    // for db to create the same schema
     string id = 1;
-    string parent_id = 2;
-    string version = 3;
-    string owner = 4;
-    uint64  submitted_on = 5;
-    uint32 priority = 6;
-    uint64 longgest_running_time = 7;
-    uint64 longgest_waiting_time = 8;
+    string name = 2;
+    string parent_id = 3;
+    string discription = 4;
+    string group_name = 5;
+    string owner = 6;
+    uint64 submitted_on = 7;
+    Status status = 8;
+    uint32 priority = 9;
+    uint64 longgest_running_time = 10;
+    uint64 longgest_waiting_time = 11;
+      
+    message TaskNode {
+        Task task = 1;
+        repeated InputParameter inputparameters = 2;
+        repeated OutputParameter outputparameters = 3;
+    }
+    repeated TaskNode tasks = 12;
+    
+    // for serialized only, no schema in db
     message Graph {
         message Node {
             float x = 1;
             float y = 2;
             float width = 3;
             float height = 4;
-            string node_id = 5;
-            string module_id = 6;
-            repeated .common.InputParameter inputparameters = 7;
-            repeated .common.OutputParameter outputparameters = 8;
-            .common.Status statu = 9;
         }
         message Edge {
             message Port {
@@ -39,5 +47,5 @@ message Job {
         repeated Node nodes = 1;
         repeated Edge edges = 2;
     }
-    Graph graph = 9;
+    Graph graph = 13;
 }

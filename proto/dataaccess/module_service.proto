@@ -1,0 +1,105 @@
+syntax = "proto3";
+package grpc.dataaccess;
+import "dataaccess/account.proto";
+import "error_code.proto";
+import "jobmanager/module.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.DataAccess";
+
+message AddModuleRequest {
+    string current_user_name = 1;
+    .grpc.jobmanager.Module module = 2;
+}
+
+message AddModuleResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    string module_id = 3;
+}
+
+message GetModuleRequest {
+    string current_user_name = 1;
+    string module_id = 2;
+}
+
+message GetModuleResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    .grpc.jobmanager.Module module = 3;
+}
+
+message UpdateModuleRequest {
+    string current_user_name = 1;
+    .grpc.jobmanager.Module module = 2;
+}
+
+message UpdateModuleResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message DeleteModuleRequest {
+    string current_user_name = 1;
+    string module_id = 2;
+}
+
+message DeleteModuleResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message GetModulesByUserRequest {
+    string current_user_name = 1;
+}
+
+message GetModulesByUserResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated .grpc.jobmanager.Module modules = 3;
+    repeated .grpc.jobmanager.Module shared_modules = 4;
+}
+
+message ShareModuleRequest {
+    string current_user_name = 1;
+    string module_id = 2;
+    string account_name = 3;
+}
+
+message ShareModuleResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message StopShareModuleRequest {
+    string current_user_name = 1;
+    string module_id = 2;
+    string account_name = 3;
+}
+
+message StopShareModuleResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message GetAccountsModuleSharedToRequest {
+    string current_user_name = 1;
+    string module_id = 2;
+}
+
+message GetAccountsModuleSharedToResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated Account accounts = 3;
+}
+
+service ModuleService {
+    rpc AddModule(AddModuleRequest) returns(AddModuleResponse);
+    rpc GetModule(GetModuleRequest) returns(GetModuleResponse);
+    rpc UpdateModule(UpdateModuleRequest) returns(UpdateModuleResponse);
+    rpc DeleteModule(DeleteModuleRequest) returns(DeleteModuleResponse); 
+
+    rpc GetModulesByUser(GetModulesByUserRequest) returns(GetModulesByUserResponse);
+    rpc ShareModule(ShareModuleRequest) returns(ShareModuleResponse);
+    rpc StopShareModule(StopShareModuleRequest) returns(StopShareModuleResponse);
+    rpc GetAccountsModuleSharedTo(GetAccountsModuleSharedToRequest) returns(GetAccountsModuleSharedToResponse);
+}

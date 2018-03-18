@@ -1,0 +1,186 @@
+syntax = "proto3";
+package grpc.dataaccess;
+import "dataaccess/account.proto";
+import "error_code.proto";
+option csharp_namespace = "Microsoft.CGC.GRPC.DataAccess";
+
+message AddUserRequest
+{
+    string current_user_name = 1;
+    User user = 2;
+}
+
+message AddUserResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message GetUserRequest
+{
+    string current_user_name = 1;
+    string user_name = 2;
+}
+
+message GetUserResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    User user = 3;
+}
+
+message UpdateUserRequest
+{
+    string current_user_name = 1;
+    User user = 2;
+}
+
+message UpdateUserResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message RemoveUserRequest
+{
+    string current_user_name = 1;
+    string user_name = 2;
+}
+
+message RemoveUserResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message AddGroupRequest
+{
+    string current_user_name = 1;
+    Group group = 2;
+}
+
+message AddGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message GetGroupRequest
+{
+    string current_user_name = 1;
+    string group_name = 2;
+}
+
+message GetGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    Group group = 3;
+}
+
+message UpdateGroupRequest
+{
+    string current_user_name = 1;
+    Group group = 2;
+}
+
+message UpdateGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message RemoveGroupRequest
+{
+    string current_user_name = 1;
+    string group_name = 2;
+}
+
+message RemoveGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message AddAccountToGroupRequest
+{
+    string current_user_name = 1;
+    string account_name = 2;
+    string group_name = 3;
+}
+
+message AddAccountToGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message RemoveAccountFromGroupRequest
+{
+    string current_user_name = 1;
+    string account_name = 2;
+    string group_name = 3;
+}
+
+message RemoveAccountFromGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+}
+
+message GetOwnedGroupsRequest
+{
+    string current_user_name = 1;
+    string user_name = 2;
+}
+
+message GetOwnedGroupsResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated Group groups = 3;
+}
+
+message GetMembersOfGroupRequest
+{
+    string current_user_name = 1;
+    string group_name = 2;
+}
+
+message GetMembersOfGroupResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated Account accounts = 3;
+}
+
+message GetMembershipsOfAccountRequest
+{
+    string current_user_name = 1;
+    string account_name = 2;
+}
+
+message GetMembershipsOfAccountResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated Group groups = 3;
+}
+
+service UserService
+{
+    rpc Echo (AddUserRequest) returns (GetUserResponse);
+    rpc AddUser (AddUserRequest) returns (AddUserResponse);
+    rpc UpdateUser (UpdateUserRequest) returns (UpdateUserResponse);
+    rpc RemoveUser (RemoveUserRequest) returns (RemoveUserResponse);
+    rpc AddGroup (AddGroupRequest) returns (AddGroupResponse);
+    rpc UpdateGroup (UpdateGroupRequest) returns (UpdateGroupResponse);
+    rpc RemoveGroup (RemoveGroupRequest) returns (RemoveGroupResponse);
+    rpc AddAccountToGroup (AddAccountToGroupRequest) returns (AddAccountToGroupResponse);
+    rpc RemoveAccountFromGroup (RemoveAccountFromGroupRequest) returns (RemoveAccountFromGroupResponse);
+    rpc GetUser (GetUserRequest) returns (GetUserResponse);
+    rpc GetGroup (GetGroupRequest) returns (GetGroupResponse);
+    rpc GetOwnedGroups (GetOwnedGroupsRequest) returns (GetOwnedGroupsResponse);
+    rpc GetMembersOfGroup (GetMembersOfGroupRequest) returns (GetMembersOfGroupResponse);
+    rpc GetMembershipsOfAccount (GetMembershipsOfAccountRequest) returns (GetMembershipsOfAccountResponse);
+}

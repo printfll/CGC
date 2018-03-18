@@ -1,21 +1,21 @@
 syntax = "proto3";
-package cluster;
+package grpc.cluster;
 
-import "parameter.proto";
-import "moduletype.proto";
+import "jobmanager/parameter.proto";
+import "jobmanager/module_type.proto";
 
-option csharp_namespace = "Microsoft.CGC.Cluster.GRPC";
+option csharp_namespace = "Microsoft.CGC.GRPC.Cluster";
 
 message  Task {
     /// <summary>
     ///     The list of task input parameters.
     /// </summary>
-    repeated .common.InputParameter input_parameters= 1;
+    repeated .grpc.jobmanager.InputParameter input_parameters= 1;
 
     /// <summary>
     ///     The list of task output parameters.
     /// </summary>
-    repeated .common.OutputParameter output_parameters = 2;
+    repeated .grpc.jobmanager.OutputParameter output_parameters = 2;
 
     /// <summary>
     ///     The HDFS path of source code.
@@ -33,5 +33,5 @@ message  Task {
     /// </summary>
     string config = 5;
 
-    .common.ModuleType task_type = 6;
+    .grpc.jobmanager.ModuleType task_type = 6;
 }

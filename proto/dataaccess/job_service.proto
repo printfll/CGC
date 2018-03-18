@@ -1,0 +1,134 @@
+syntax = "proto3";
+import "dataaccess/account.proto";
+import "error_code.proto";
+package grpc.dataaccess;
+import "jobmanager/job.proto";
+import "jobmanager/status.proto";
+import "jobmanager/resource.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.DataAccess";
+
+message AddJobRequest {
+    string current_user_name = 1;
+    .grpc.jobmanager.Job job = 2;
+}
+
+message AddJobResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    string job_id = 3;
+}
+
+message GetJobRequest {
+    string current_user_name = 1;
+    string job_id = 2;
+}
+
+message GetJobResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    .grpc.jobmanager.Job job = 3;
+}
+
+message UpdateJobRequest {
+    string current_user_name = 1;
+    .grpc.jobmanager.Job job = 2;
+}
+
+message UpdateJobResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message DeleteJobRequest {
+    string current_user_name = 1;
+    string job_id = 2;
+}
+
+message DeleteJobResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message GetJobsByStatusRequest {
+    string current_user_name = 1;
+    .grpc.jobmanager.Status status = 2;
+}
+
+message GetJobsByStatusResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated .grpc.jobmanager.Job jobs = 3;
+}
+
+message GetJobsByUserRequest {
+    string current_user_name = 1;
+}
+
+message GetJobsByUserResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated .grpc.jobmanager.Job jobs = 3;
+    repeated .grpc.jobmanager.Job shared_jobs = 4;
+}
+
+message ShareJobRequest {
+    string current_user_name = 1;
+    string job_id = 2;
+    string account_name = 3;
+}
+
+message ShareJobResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message StopShareJobRequest {
+    string current_user_name = 1;
+    string job_id = 2;
+    string account_name = 3;
+}
+
+message StopShareJobResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;   
+}
+
+message GetAccountsJobSharedToRequest {
+    string current_user_name = 1;
+    string job_id = 2;
+}
+
+message GetAccountsJobSharedToResponse {
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    repeated Account accounts = 3;
+}
+
+message GetQuotaRequest {
+    string group_id = 1;
+}
+
+message GetQuotaResponse {
+    message Quota {
+        string cluster_type = 1;
+        repeated .grpc.jobmanager.Resource resources = 2;
+    }
+    bool result = 1;
+    repeated Quota quotas = 2;
+}
+
+service JobService {
+    rpc AddJob(AddJobRequest) returns(AddJobResponse);
+    rpc GetJob(GetJobRequest) returns(GetJobResponse);
+    rpc UpdateJob(UpdateJobRequest) returns(UpdateJobResponse);
+    rpc DeleteJob(DeleteJobRequest) returns(DeleteJobResponse); 
+    
+    rpc GetJobsByStatus(GetJobsByStatusRequest) returns(GetJobsByStatusResponse);  
+    rpc GetJobsByUser(GetJobsByUserRequest) returns(GetJobsByUserResponse);
+    rpc ShareJob(ShareJobRequest) returns(ShareJobResponse);
+    rpc StopShareJob(StopShareJobRequest) returns(StopShareJobResponse);
+    rpc GetAccountsJobSharedTo(GetAccountsJobSharedToRequest) returns(GetAccountsJobSharedToResponse);
+    
+    rpc GetQuota(GetQuotaRequest) returns(GetQuotaResponse);
+}

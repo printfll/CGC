@@ -1,9 +1,8 @@
 syntax = "proto3";
-package common;
+package grpc.jobmanager;
+import "jobmanager/value_type.proto";
 
-import "valuetype.proto";
-
-option csharp_namespace = "Microsoft.CGC.Common.GRPC";
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
 
 /// <summary>
 ///     The input parameter.

@@ -1,0 +1,27 @@
+syntax = "proto3";
+package grpc.dataaccess;
+import "dataaccess/account.proto";
+import "error_code.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.DataAccess";
+
+message CheckPermissionRequest
+{
+    User current_user = 1;
+    User user = 2;
+    string resource_type = 3;
+    string resource_id = 4;
+    string permission = 5;
+}
+
+message CheckPermissionResponse
+{
+    .grpc.ErrorCode error_code = 1;
+    string message = 2;
+    bool has_permission = 3;
+}
+
+service AuthorizationService
+{
+    rpc CheckPermission (CheckPermissionRequest) returns (CheckPermissionResponse);
+}

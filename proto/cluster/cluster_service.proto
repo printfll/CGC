@@ -1,10 +1,11 @@
 syntax = "proto3";
-package cluster;
+package grpc.cluster;
 
 import "cluster/task.proto";
-import "status.proto";
+import "jobmananger/status.proto";
+import "jobmanager/resource.proto";
 
-option csharp_namespace = "Microsoft.CGC.Cluster.GRPC";
+option csharp_namespace = "Microsoft.CGC.GRPC.Cluster";
 
 message Request {
     string id = 1;
@@ -27,7 +28,7 @@ message SubmitTaskResponse {
     /// </summary>
     bool result = 1;
 
-    string task_id = 2;
+    string internal_task_id = 2;
 }
 
 message GetStatusResponse {
@@ -35,28 +36,16 @@ message GetStatusResponse {
     ///     Indicate whether the current response is valid or not.
     /// </summary>
     bool result = 1;
-    common.Status status = 2;
+    uint32 status = 2;
     string log = 3;
 }
 
 message GetResourceResponse {
-    message ResourcePair {
-        enum ResourceType {
-            CPU = 0;
-            GPU = 1;
-            DISK = 2;
-            MEMORY = 3;
-        }
-
-        ResourceType type = 1;
-        int64 value = 2;
-    }
-
     /// <summary>
     ///     Indicate whether the current response is valid or not.
     /// </summary>
     bool result = 1;
-    repeated ResourcePair resource = 2;
+    repeated .grpc.jobmanager resources = 2;
 }
 
 /// <summary>
