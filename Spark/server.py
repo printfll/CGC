@@ -1,7 +1,7 @@
 import grpc
 import time
 from concurrent import futures
-from cluster import clusterservice_pb2, clusterservice_pb2_grpc
+from cluster import cluster_service_pb2, cluster_service_pb2_grpc
 from jobapi import sparkserviceapi
 import logapi
 import grpc
@@ -11,7 +11,7 @@ import globalV
 
 logger = logapi.Log()
 
-class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
+class ClusterProxy(cluster_service_pb2_grpc.ClusterProxyServicer):
     def __init__(self):
         self.sparkservice = sparkserviceapi("config/config.txt")
 
@@ -50,7 +50,7 @@ def serve():
     logger.info("Openning a server in " + globalV.HOST + ":" + globalV.PORT)
     grpcServer = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     proxy = ClusterProxy()
-    clusterservice_pb2_grpc.add_ClusterProxyServicer_to_server(proxy, grpcServer)
+    cluster_service_pb2_grpc.add_ClusterProxyServicer_to_server(proxy, grpcServer)
     grpcServer.add_insecure_port(globalV.HOST + ':' + globalV.PORT)
     grpcServer.start()
     try:

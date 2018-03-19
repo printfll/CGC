@@ -1,4 +1,4 @@
-from cluster import clusterservice_pb2
+from cluster import cluster_service_pb2
 from jobmanager import status_pb2, resource_pb2
 import status_pb2
 import globalV
@@ -18,7 +18,7 @@ class sparkserviceapi:
     
     def KillJob(self, jobid):
         logger.info("Calling jobapi KillJob.")
-        response = clusterservice_pb2.Response()
+        response = cluster_service_pb2.Response()
         try:
             url = self.prefix_addr +"apps/" + jobid + "/state"
             data = {"state":"KILLED"}
@@ -36,7 +36,7 @@ class sparkserviceapi:
 
     def CreateJob(self, task):
         logger.info("Calling jobapi CreateJob.")
-        response = clusterservice_pb2.SubmitTaskResponse()
+        response = cluster_service_pb2.SubmitTaskResponse()
         try:
             cmd_arr = task.command.split()
             config = json.loads(task.config)
@@ -84,7 +84,7 @@ class sparkserviceapi:
 
     def JobStatus(self, jobid):
         logger.info("Calling jobapi JobStatus.")
-        response = clusterservice_pb2.GetStatusResponse()
+        response = cluster_service_pb2.GetStatusResponse()
         try:
             url = self.prefix_addr + "apps/" + jobid + "/"
             res = requests.get(url)
@@ -114,7 +114,7 @@ class sparkserviceapi:
 
     def GetResourceFromConfig(self, configjson):
         logger.info("Calling jobapi GetResourceFromConfig.")
-        response = clusterservice_pb2.GetResourceResponse()
+        response = cluster_service_pb2.GetResourceResponse()
         try:
             data = json.loads(configjson)
             if data["config"]:
