@@ -1,0 +1,51 @@
+syntax = "proto3";
+package grpc.jobmanager;
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+enum ValueType {
+    /// <summary>
+    ///     string
+    /// </summary>
+    STRING = 0;
+
+    /// <summary>
+    ///     int
+    /// </summary>
+    INT32 = 1;
+
+    /// <summary>
+    ///     long
+    /// </summary>
+    INT64 = 2;
+
+    /// <summary>
+    ///     float
+    /// </summary>
+    SINGLE = 3;
+
+    /// <summary>
+    ///     double
+    /// </summary>
+    DOUBLE = 4;
+
+    /// <summary>
+    ///     bool
+    /// </summary>
+    BOOLEAN = 5;
+
+    /// <summary>
+    ///     row file
+    /// </summary>
+    FILE = 6;
+
+    /// <summary>
+    ///     Json token
+    /// </summary>
+    JTOKEN = 7;
+
+    /// <summary>
+    ///     directory
+    /// </summary>
+    DIRECTORY = 8;
+}

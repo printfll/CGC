@@ -1,0 +1,46 @@
+syntax = "proto3";
+package grpc.jobmanager;
+import "jobmanager/value_type.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+/// <summary>
+///     The input parameter.
+/// </summary>
+message InputParameter {
+    /// <summary>
+    ///     Name of the parameter.
+    /// </summary>
+    string name = 1;
+
+    /// <summary>
+    ///     Type of the value.
+    /// </summary>
+    ValueType value_type = 2;
+
+    /// <summary>
+    ///     The value of the parameter.
+    /// </summary>
+    string value = 3;
+}
+
+
+/// <summary>
+///     The task output parameter.
+/// </summary>
+message OutputParameter {
+    /// <summary>
+    ///     Name of the parameter.
+    /// </summary>
+    string name = 1;
+
+    /// <summary>
+    ///     Type of the value.
+    /// </summary>
+    ValueType value_type = 2;
+
+    /// <summary>
+    ///     If some of parameters should dump to file, dump under this (HDFS) path.
+    /// </summary>
+    string output_path = 3;
+}

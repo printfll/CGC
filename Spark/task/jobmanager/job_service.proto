@@ -1,0 +1,10 @@
+syntax = "proto3";
+package grpc.jobmanager;
+import "dataaccess/job_service.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+service JobService {
+    // TODO(p1): cancel job
+    rpc AddJob(.grpc.dataaccess.AddJobRequest) returns(.grpc.dataaccess.AddJobResponse);
+}

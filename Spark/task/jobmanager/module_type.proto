@@ -1,0 +1,12 @@
+syntax = "proto3";
+package grpc.jobmanager;
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+enum ModuleType {
+    K8S = 0;
+    DOCKER_SM = 1;
+    TF_SM = 2;
+    TF_DIST = 3;
+    SPARK = 4;
+}

@@ -1,4 +1,5 @@
 from cluster import clusterservice_pb2
+from jobmanager import status_pb2, resource_pb2
 import status_pb2
 import globalV
 import subprocess
@@ -13,13 +14,13 @@ class sparkserviceapi:
             config = json.load(json_data)
         self.rm_web_addr = config['spark']['yarn.resourcemanager.webapp.address']
         self.namenode = config['spark']['namenode']
-        self.prefix_addr = "http://" + self.namenode + ":" + self.rm_web_addr.split(":")[-1] + "/ws/v1/cluster/apps/"
+        self.prefix_addr = "http://" + self.namenode + ":" + self.rm_web_addr.split(":")[-1] + "/ws/v1/cluster/"
     
     def KillJob(self, jobid):
         logger.info("Calling jobapi KillJob.")
         response = clusterservice_pb2.Response()
         try:
-            url = self.prefix_addr + jobid + "/state"
+            url = self.prefix_addr +"apps/" + jobid + "/state"
             data = {"state":"KILLED"}
             headers = {'Content-type': 'application/json'}
             res = requests.put(str(url), data = json.dumps(data), headers = headers)
@@ -29,7 +30,7 @@ class sparkserviceapi:
                 response.result = True
         except Exception as e:
             response.result = False
-            logger.warning("Throw expcetion at KillJob: %s" % e)
+            logger.exception("Throw expcetion at KillJob: %s" % e)
         logger.info("KillJob end.")
         return response
 
@@ -39,23 +40,31 @@ class sparkserviceapi:
         try:
             cmd_arr = task.command.split()
             config = json.loads(task.config)
+            core_set = False
+            mem_set = False
             for i in range(len(cmd_arr)):
-                if cmd_arr[i].startswith("--master"):
-                    cmd_arr[i+1] = "yarn"
-                elif cmd_arr[i].startswith("--deploy-mode"):
-                    cmd_arr[i+1] = "cluster"
+                if cmd_arr[i].startswith("--master") or cmd_arr[i].startswith("--deploy-mode"):
+                    cmd_arr[i+1] = ""
+                    cmd_arr[i] = ""
                 elif cmd_arr[i].startswith("spark-submit"):
                     cmd_arr[i] = ""
-            if config["config"] != None:
-                if config["config"]["cpu"] != None:
-                    cpu = config["config"]["cpu"]
-                    cmd_arr.append("--driver-cores")
-                    cmd_arr.append(str(cpu))
-                if config["config"]["memory"] != None:
-                    memory = config["config"]["memory"]
-                    cmd_arr.append("--driver-memory")
-                    cmd_arr.append(str(memory))
-            bashCommand = "spark-submit --conf spark.yarn.submit.waitAppCompletion=false"
+                elif cmd_arr[i].startswith("--driver-cores") and config["config"] and config["config"]["cpu"]:
+                    cmd_arr[i+1] = str(cpu)
+                    core_set = True
+                elif cmd_arr[i].startswith("--driver-memory") and config["config"] and config["config"]["memory"]:
+                    cmd_arr[i+1] = str(memory)
+                    mem_set = True
+            
+            if not core_set and config["config"] and config["config"]["cpu"]:
+                cpu = config["config"]["cpu"]
+                cmd_arr.append("--driver-cores")
+                cmd_arr.append(str(cpu))
+            if not mem_set and config["config"] and config["config"]["memory"] != None:
+                memory = config["config"]["memory"]
+                cmd_arr.append("--driver-memory")
+                cmd_arr.append(str(memory))
+
+            bashCommand = "spark-submit --conf spark.yarn.submit.waitAppCompletion=false --master yarn --deploy-mode cluster"
             command = bashCommand + " " + " ".join(cmd_arr)
             pro = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             for line in pro.stdout:
@@ -63,12 +72,12 @@ class sparkserviceapi:
                 if "Submitted application" in line:
                     start = line.find("Submitted application")+len("Submitted application")
                     app_id = line[start:-1].strip()
-                    response.task_id = app_id
+                    response.internal_task_id = app_id
                     response.result = True
                     break
         except Exception as e:
             response.result = False
-            logger.warning("Throw expcetion at CreateJob: %s" % e)
+            logger.exception("Throw expcetion at CreateJob: %s" % e)
         logger.info("CreateJob end.")
         return response
 
@@ -77,7 +86,7 @@ class sparkserviceapi:
         logger.info("Calling jobapi JobStatus.")
         response = clusterservice_pb2.GetStatusResponse()
         try:
-            url = self.prefix_addr + jobid + "/"
+            url = self.prefix_addr + "apps/" + jobid + "/"
             res = requests.get(url)
             status = res.json()
             response.result = True
@@ -90,10 +99,13 @@ class sparkserviceapi:
                 response.result = status_pb2.Status.Value('FINISHED')
             elif s == "KILLED":
                 response.result = status_pb2.Status.Value('KILLED')
+            elif s == "ACCEPTED":
+                response.result = status_pb2.Status.Value('WAITING')
+            else:
+                response.result = status_pb2.Status.Value('NONE')
             response.log = res.text
-            return response
         except Exception as e:
-            logger.warning("Throw expcetion at JobStatus: %s" % e)
+            logger.exception("Throw expcetion at JobStatus: %s" % e)
             response.result = False
             response.status = status_pb2.Status.Value('ERROR')
             response.log = str(e)
@@ -101,8 +113,37 @@ class sparkserviceapi:
         return response
 
     def GetResourceFromConfig(self, configjson):
+        logger.info("Calling jobapi GetResourceFromConfig.")
+        response = clusterservice_pb2.GetResourceResponse()
         try:
             data = json.loads(configjson)
-
+            if data["config"]:
+                response.result = True
+                if data["config"]["cpu"]:
+                    response.resources.add(
+                        type=resource_pb2.Resource.ResourceType.Value('CPU'),
+                        value=data["config"]["cpu"]
+                    )
+                if data["config"]["memory"]:
+                    response.resources.add(
+                        type=resource_pb2.Resource.ResourceType.Value('MEMORY'),
+                        value=data["config"]["memory"]
+                    )
         except Exception as e:
-            return None
+            logger.exception("Throw expcetion at GetResourceFromConfig: %s" % e)
+        logger.info("GetResourceFromConfig end.")
+        return response
+    
+    def GetSparkResource(self):
+        logger.info("Calling jobapi GetSparkResource.")
+
+        try:
+            url =  self.prefix_addr+"/metrics"
+            headers = {'Content-type': 'application/json'}
+            res = requests.put(str(url), headers = headers)
+            if res["clusterMetrics"]:
+                response.result=True
+                allocatedMB = res["clusterMetrics"]["allocatedMB"]
+                totalMB = res["clusterMetrics"]["totalMB"]
+                allocatedVirtualCores = res["clusterMetrics"]["allocatedVirtualCores"]
+                totalVirtualCores = res["clusterMetrics"]["totalVirtualCores"]

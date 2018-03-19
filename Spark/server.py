@@ -12,12 +12,6 @@ import globalV
 logger = logapi.Log()
 
 class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
-    # def DoFormat(self, request, context):
-    #     str = request.text
-    #     return ClusterProxy_pb2.Data(text=str.upper())
-    # def DoAdd(selfself, request, context):
-    #     str = request.text
-    #     return ClusterProxy_pb2.Data(text=str.upper() + str.lower())
     def __init__(self):
         self.sparkservice = sparkserviceapi("config/config.txt")
 
@@ -28,7 +22,10 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
         pass
 
     def GetResourcefromconfig(self, resourcerequest, context):
-        pass
+        logger.info("Calling GetResourcefromconfig service.")
+        res = self.sparkservice.GetResourceFromConfig(resourcerequest.config)
+        logger.info("GetResourcefromconfig successfully.")
+        return res
 
     def SubmitTask(self, task, context):
         logger.info("Calling SubmitTask service.")
@@ -47,10 +44,6 @@ class ClusterProxy(clusterservice_pb2_grpc.ClusterProxyServicer):
         res = self.sparkservice.JobStatus(request.id)
         logger.info("GetStatus successfully.")
         return res
-
-    def GetLog(self, request, context):
-        pass
-
 
 
 def serve():

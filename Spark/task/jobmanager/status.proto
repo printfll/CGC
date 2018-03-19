@@ -1,0 +1,52 @@
+syntax = "proto3";
+package grpc.jobmanager;
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+// [flags]
+enum Status {
+    /// <summary>
+    ///     The job status currently is unknown.
+    /// </summary>
+    NONE = 0;
+
+    /// <summary>
+    ///     Cannot run at present due to dependencies.
+    /// </summary>
+    WAITING = 1;
+
+    /// <summary>
+    ///     Waiting for resource, the job can be run once having enough resource.
+    /// </summary>
+    READY = 2;
+    /// <summary>
+    ///     The job is running right now.
+    /// </summary>
+    RUNNING = 4;
+
+    /// <summary>
+    ///     Successfully finished the job.
+    /// </summary>
+    FINISHED = 8;
+
+    /// <summary>
+    ///     The job has exceeded the time limits.
+    /// </summary>
+    TIMEOUT = 16;
+
+    /// <summary>
+    ///     Previous job has encountered an error and is rerunning.
+    /// </summary>
+    RERUNNING = 32;
+
+    /// <summary>
+    ///     The job has been killed my JobManager or user.
+    /// </summary>
+    KILLED = 64;
+
+    /// <summary>
+    ///     The job encountered an error and failed.
+    /// </summary>
+    ERROR = 128;
+}
+

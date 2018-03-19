@@ -1,0 +1,9 @@
+syntax = "proto3";
+package grpc.jobmanager;
+import "dataaccess/module_service.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+service ModuleService {
+    rpc AddModule(grpc.dataaccess.AddModuleRequest) returns(grpc.dataaccess.AddModuleResponse);
+}

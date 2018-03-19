@@ -1,0 +1,20 @@
+{
+    "type":"spark",
+    "name": "test",
+    "inputs": [
+        {
+            "name": "word.txt",
+            "type": "file",
+            "value": "hdfs_file"
+        }
+    ],
+    "outputs": [
+    ], 
+    "config":{
+        "cpu":2,
+        "memory":2048
+    },
+    "dependencies": ["wordCount.py"],
+    "command": "spark-submit --class org.apache.spark.examples.SparkPi  --master yarn --deploy-mode /user/carina/wordCount.py /user/carina/word.txt"
+    }
+    

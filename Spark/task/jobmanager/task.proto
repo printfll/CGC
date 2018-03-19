@@ -1,0 +1,13 @@
+syntax = "proto3";
+package grpc.jobmanager;
+import "jobmanager/status.proto";
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+message Task {
+    string node_id = 1;
+    string task_id = 2;
+    string module_id = 4;
+    Status status = 5;
+}
+

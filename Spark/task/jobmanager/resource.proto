@@ -1,0 +1,15 @@
+syntax = "proto3";
+package grpc.jobmanager;
+
+option csharp_namespace = "Microsoft.CGC.GRPC.JobManager";
+
+message Resource {
+    enum ResourceType {
+        CPU = 0;
+        GPU = 1;
+        DISK = 2;
+        MEMORY = 3;
+    }
+    ResourceType type = 1;
+    int64 value = 2;
+}
