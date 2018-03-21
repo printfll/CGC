@@ -15,6 +15,6 @@
         "memory":2048
     },
     "dependencies": ["wordCount.py"],
-    "command": "spark-submit --class org.apache.spark.examples.SparkPi  --master yarn --deploy-mode hdfs://10.1.7.18:9000/user/carina/wordCount.py hdfs://10.1.7.18:9000/user/carina/wordCount.py"
+    "command": "spark-submit --class org.apache.spark.examples.SparkPi  --master yarn --deploy-mode hdfs://10.1.7.23:8020/user/client/wordCount.py hdfs://10.1.7.23:8020/user/client/wordCount.py"
     }
     
