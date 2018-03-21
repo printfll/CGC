@@ -6,14 +6,15 @@ from jobapi import sparkserviceapi
 import logapi
 import grpc
 import time
-
+import os
 import globalV
 
 logger = logapi.Log()
 
 class ClusterProxy(cluster_service_pb2_grpc.ClusterProxyServicer):
     def __init__(self):
-        self.sparkservice = sparkserviceapi("config/config.txt")
+        hadoop_conf_dir = os.environ["HADOOP_CONF_DIR"]
+        self.sparkservice = sparkserviceapi(hadoop_conf_dir+"/config.txt")
 
     def GetResourceCapacity(self, resourcerequest, context):
         pass
