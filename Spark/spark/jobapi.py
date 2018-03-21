@@ -63,7 +63,7 @@ class sparkserviceapi:
                 cmd_arr.append("--driver-memory")
                 cmd_arr.append(str(memory))
 
-            bashCommand = "/home/client/spark-2.3.0-bin-hadoop2.6/bin/spark-submit --conf spark.yarn.submit.waitAppCompletion=false --master yarn --deploy-mode cluster"
+            bashCommand = "spark-submit --conf spark.yarn.submit.waitAppCompletion=false --master yarn --deploy-mode cluster"
             command = bashCommand + " " + " ".join(cmd_arr)
             pro = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             for line in pro.stdout:
