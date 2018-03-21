@@ -1,6 +1,7 @@
-FROM python:3.6
+FROM centos:7.0.1406
 WORKDIR /sparkservice
 ADD . /sparkservice
+RUN yum install python
 RUN pip install protobuf==3.5.2
 RUN pip install grpcio==1.10.0
 RUN pip install grpcio-tools==1.10.0
