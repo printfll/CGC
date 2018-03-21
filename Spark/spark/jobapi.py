@@ -1,6 +1,5 @@
 from cluster import cluster_service_pb2
 from jobmanager import status_pb2, resource_pb2
-import status_pb2
 import globalV
 import subprocess
 import json
@@ -48,23 +47,23 @@ class sparkserviceapi:
                     cmd_arr[i] = ""
                 elif cmd_arr[i].startswith("spark-submit"):
                     cmd_arr[i] = ""
-                elif cmd_arr[i].startswith("--driver-cores") and config["config"] and config["config"]["cpu"]:
-                    cmd_arr[i+1] = str(cpu)
+                elif cmd_arr[i].startswith("--driver-cores") and config["cpu"]:
+                    cmd_arr[i+1] = str(config["cpu"])
                     core_set = True
-                elif cmd_arr[i].startswith("--driver-memory") and config["config"] and config["config"]["memory"]:
-                    cmd_arr[i+1] = str(memory)
+                elif cmd_arr[i].startswith("--driver-memory") and config["memory"]:
+                    cmd_arr[i+1] = str(config["memory"])
                     mem_set = True
             
-            if not core_set and config["config"] and config["config"]["cpu"]:
-                cpu = config["config"]["cpu"]
+            if not core_set and config["cpu"]:
+                cpu = config["cpu"]
                 cmd_arr.append("--driver-cores")
                 cmd_arr.append(str(cpu))
-            if not mem_set and config["config"] and config["config"]["memory"] != None:
-                memory = config["config"]["memory"]
+            if not mem_set and config["memory"]:
+                memory = config["memory"]
                 cmd_arr.append("--driver-memory")
                 cmd_arr.append(str(memory))
 
-            bashCommand = "spark-submit --conf spark.yarn.submit.waitAppCompletion=false --master yarn --deploy-mode cluster"
+            bashCommand = "/home/client/spark-2.3.0-bin-hadoop2.6/bin/spark-submit --conf spark.yarn.submit.waitAppCompletion=false --master yarn --deploy-mode cluster"
             command = bashCommand + " " + " ".join(cmd_arr)
             pro = subprocess.Popen(command.split(), stdout=subprocess.PIPE)
             for line in pro.stdout:
@@ -136,7 +135,7 @@ class sparkserviceapi:
     
     def GetSparkResource(self):
         logger.info("Calling jobapi GetSparkResource.")
-
+        response = {}
         try:
             url =  self.prefix_addr+"/metrics"
             headers = {'Content-type': 'application/json'}
@@ -147,3 +146,8 @@ class sparkserviceapi:
                 totalMB = res["clusterMetrics"]["totalMB"]
                 allocatedVirtualCores = res["clusterMetrics"]["allocatedVirtualCores"]
                 totalVirtualCores = res["clusterMetrics"]["totalVirtualCores"]
+        except Exception as e:
+            logger.exception("Throw expcetion at GetSparkResource: %s" % e)
+        logger.info("GetSparkResource end.")
+        return response
+

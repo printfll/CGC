@@ -6,7 +6,7 @@ sys.path.append("./../task")
 import os
 import json
 from cluster import cluster_service_pb2, cluster_service_pb2_grpc, task_pb2
-import parameter_pb2, moduletype_pb2
+from jobmanager import parameter_pb2, module_type_pb2
 _HOST = '127.0.0.1'
 _PORT = '8089'
 
@@ -23,20 +23,19 @@ def testkilltask(jobname):
     print(response)
 
 def testgetresource(config_file):
-    conn = grpc.insecure_channel(_HOST + ':' + _PORT)
-    client = cluster_service_pb2_grpc.ClusterProxyStub(channel=conn)
-    data = json.loads(config_file)
-    response = client.GetResourcefromconfig(cluster_service_pb2.GetResourceRequest(config=data))
+    pass
 
 def testsubmittask(config_file):
     conn = grpc.insecure_channel(_HOST + ':' + _PORT)
     client = cluster_service_pb2_grpc.ClusterProxyStub(channel=conn)
-    data = json.load(config_file)
-    cmd = ""
-    response = client.SubmitTask(task_pb2.Task(command=data["command"], src_code_path ="",task_type=0,config=data["config"]))
-
+    data = json.load(open(config_file))
+    response = client.SubmitTask(task_pb2.Task(command=data["command"], src_code_path ="",task_type=0,config=json.dumps(data["config"])))
+    print(response)
+    return response
 
 if __name__ == '__main__':
-    #testkilltask("application_1520476850930_0002")
-    #testgetstatus("application_1520476850930_0002")
-    testsubmittask("test_config.json")
+    res = testsubmittask("test_config.json")
+    id_ = res.internal_task_id
+    testgetstatus(id_)
+    testkilltask(id_)
+    
